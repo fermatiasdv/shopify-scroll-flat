@@ -1,0 +1,222 @@
+/*
+ * Estilos portados de L:section ({% stylesheet %}), con el prefijo `fs-`. Sin nada del tema
+ * (`html.fragrance-scroll-animated`, `.page-wrapper`, `.header-section`, `--layer-menu-drawer`).
+ *
+ * Variables que escriben los componentes (los valores salen de useViewport, layoutFor y timing.js):
+ *   --fs-page-height, --fs-label-transition-ms, --fs-background-transition-ms,
+ *   --fs-title-font-size, --fs-ingredient-font-size, --fs-word-fade-ms
+ */
+
+/* L:section: .fragrance-scroll
+ * `isolation: isolate` es nuevo: reemplaza a --layer-menu-drawer, para que los z-index internos
+ * no se filtren a las otras secciones de la home. */
+.fs-root {
+  display: block;
+  position: relative;
+  width: 100%;
+  overflow: clip;
+  isolation: isolate;
+  font-family: 'Cormorant Garamond', serif;
+  cursor: pointer;
+}
+
+/* L:section: .fragrance-scroll__container */
+.fs-container {
+  width: 100%;
+  height: var(--fs-page-height, 100vh);
+  background-color: #1a0f08;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/* L:section: .fragrance-scroll-stage (la pantalla del modo desplegado). `pointer-events: auto` NO es
+ * literal del legacy (que lo tenía en `none`): hace falta para que tocar fuera de la botella y la ✕ no haga nada.
+ * Las capas internas (`.fs-bg-layer`, `.fs-overlay`, `.fs-content`) siguen en `none`, así que el click
+ * las atraviesa y llega acá salvo sobre la botella y ✕, que tienen su propio `pointer-events: auto`. */
+.fs-stage {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  isolation: isolate;
+  pointer-events: auto;
+  font-family: 'Cormorant Garamond', serif;
+}
+
+/* L:section: .fragrance-scroll-stage .background-transition-layer */
+.fs-bg-layer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* L:section: .fragrance-scroll-stage .background-transition-bg */
+.fs-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0;
+  transition: opacity var(--fs-background-transition-ms) ease;
+}
+
+/* L:section: .fragrance-scroll-stage .background-overlay y .fragrance-scroll .collapsed-box-overlay
+ * (idénticas) */
+.fs-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  background: rgb(0 0 0 / 0.6);
+}
+
+/* L:section: .fragrance-scroll-stage .display-layer y .fragrance-scroll .collapsed-box-content
+ * (idénticas) */
+.fs-content {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* L:section: .display-item */
+.fs-item {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity var(--fs-label-transition-ms) ease,
+    transform var(--fs-label-transition-ms) ease;
+}
+
+/* L:section: .display-label */
+.fs-label {
+  color: #fff;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.2rem, 4vw, 2.5rem);
+  line-height: normal;
+  text-shadow: 0 2px 8px rgb(0 0 0 / 0.55), 0 1px 2px rgb(0 0 0 / 0.65);
+}
+
+/* L:section: .display-label-title */
+.fs-label-title {
+  font-size: var(--fs-title-font-size);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* L:section: .display-label-ingredient */
+.fs-label-ingredient {
+  font-size: var(--fs-ingredient-font-size);
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+/* L:section: .display-label-word */
+.fs-label-word {
+  display: inline-block;
+  opacity: 0;
+  transition: opacity var(--fs-word-fade-ms) ease;
+}
+
+/* L:section: .display-image */
+.fs-image {
+  width: auto;
+  height: auto;
+  max-width: 40vw;
+  max-height: 40vh;
+  object-fit: contain;
+}
+
+/* L:section: .display-image.display-image-product */
+.fs-image.fs-image-product {
+  display: block;
+  max-width: none;
+  max-height: none;
+  pointer-events: auto;
+}
+
+/* L:section: .display-image-product[href] */
+.fs-image-product[href] {
+  cursor: pointer;
+}
+
+/* Botella flat: cada capa llena el cuadro del producto. En el desplegado hay dos superpuestas que
+ * hacen el fundido cruzado; en el colapsado, una sola. */
+.fs-bottle-layer {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: opacity var(--fs-bottle-transition-ms, 0ms) ease;
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+/* L:section: .fragrance-scroll .fragrances-overlay
+ * `z-index: 20` es nuevo: reemplaza a calc(var(--layer-menu-drawer) - 1), por encima de .fs-content. */
+.fs-show-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 8vh;
+  pointer-events: none;
+}
+
+/* L:section: .fragrance-scroll .fragrances-show-button */
+.fs-show-button {
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0;
+  padding: 0.9rem 1.6rem;
+  border: none;
+  border-radius: 999px;
+  background: rgb(0 0 0 / 0.75);
+  color: #fff;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+}
+
+/* L:section: .fragrance-scroll .fragrances-show-arrow */
+.fs-show-arrow {
+  font-size: 1.2rem;
+  line-height: 1;
+  transform: translateY(-1px);
+}
+
+/* L:section: .fragrance-scroll-stage .fragrances-close-button */
+.fs-close-button {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgb(0 0 0 / 0.75);
+  color: #fff;
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  pointer-events: auto;
+}

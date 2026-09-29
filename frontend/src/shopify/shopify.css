@@ -1,0 +1,22 @@
+/* Estilos propios del adaptador de Shopify (los del componente están en fragrance-scroll.css). */
+
+fragrance-scroll {
+  display: block;
+}
+
+/* Hasta que monta React, el lugar del colapsado ya ocupa una pantalla (sin salto de layout). */
+fragrance-scroll [data-fs-mount]:empty {
+  min-height: 100vh;
+  background-color: #1a0f08;
+}
+
+/* Portal del desplegado, sobre todas las capas de Horizon (header, drawers, --layer-temporary). */
+.fs-portal {
+  position: relative;
+  z-index: 2147483000;
+}
+
+/* Con el desplegado abierto la página de atrás no scrollea. */
+html.fs-scroll-locked {
+  overflow: hidden;
+}
