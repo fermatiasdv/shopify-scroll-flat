@@ -152,7 +152,12 @@
 
 <fragrance-scroll data-section-id="{{ section.id }}">
   <script type="application/json" data-fs-config>
-    {"showLabel":{{ show_label | json }},"fragrances":[{{ fragrances_json }}],"assets":{"bottles":{{ '{' }}{{ bottles_json }}{{ '}' }},"ingredients":{{ '{' }}{{ ingredients_json }}{{ '}' }},"backgrounds":[{{ backgrounds_json }}]}}
+    {%- comment -%}
+      Las llaves literales del JSON van separadas por un espacio de los tags de salida: pegadas (tres
+      llaves seguidas, o un corchete seguido de dos llaves) confunden al parser de Liquid de Shopify y
+      theme push falla con "was not properly terminated".
+    {%- endcomment -%}
+    { "showLabel": {{ show_label | json }}, "fragrances": [{{ fragrances_json }}], "assets": { "bottles": { {{ bottles_json }} }, "ingredients": { {{ ingredients_json }} }, "backgrounds": [{{ backgrounds_json }}] } }
   </script>
   <div data-fs-mount></div>
 </fragrance-scroll>
