@@ -33,13 +33,16 @@
 /* L:section: .fragrance-scroll-stage (la pantalla del modo desplegado). `pointer-events: auto` NO es
  * literal del legacy (que lo tenía en `none`): hace falta para que tocar fuera de la botella y la ✕ no haga nada.
  * Las capas internas (`.fs-bg-layer`, `.fs-overlay`, `.fs-content`) siguen en `none`, así que el click
- * las atraviesa y llega acá salvo sobre la botella y ✕, que tienen su propio `pointer-events: auto`. */
+ * las atraviesa y llega acá salvo sobre la botella y ✕, que tienen su propio `pointer-events: auto`.
+ * `background-color` es nuevo: durante el fundido cruzado del fondo ninguna de las dos capas está
+ * opaca, y sin él se transparentaba la página que queda detrás del stage. Mismo color que .fs-container. */
 .fs-stage {
   position: fixed;
   inset: 0;
   overflow: hidden;
   isolation: isolate;
   pointer-events: auto;
+  background-color: #1a0f08;
   font-family: 'Cormorant Garamond', serif;
 }
 
